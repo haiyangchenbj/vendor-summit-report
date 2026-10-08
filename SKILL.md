@@ -1,441 +1,209 @@
 ---
 name: vendor-summit-report
-slug: vendor-summit-report
-displayName: Vendor Summit Report
-version: 1.0.0
-description: "Build an executive-oriented deep-dive report for a major data/AI vendor conference — Snowflake Summit, Databricks Data+AI Summit, Microsoft Build, Google Cloud Next, AWS re:Invent. Ships three aligned deliverables (light-theme HTML, full Markdown, enterprise-chat push version) across a fixed 8-section structure held to analyst-note standards — state-don't-instruct, vendor-data caveats, role-based buyer recommendations, and confidence-tagged planning assumptions. Use it when the user asks for a 深度专题报告 / 大会报告 / summit report on a named event, or wants a previous summit report's structure repeated for a new conference."
-description_zh: "厂商大会深度专题报告生成器——面向企业决策者的三口径交付（淡色 HTML + 完整 Markdown + 企业 IM 速读版），固定 8 段结构，遵循分析师机构标准（只陈述不发指令、厂商数据加 caveat、分角色买方建议、带置信度与年份的预测）；可复用的是结构与版式，分析内容必须从本次大会重新提炼。触发词：深度专题报告、大会报告、厂商大会报告、summit report、vendor summit deep dive、conference report、按上次那个结构做报告。"
-description_en: "Vendor summit deep-dive report"
-license: MIT
-read_when:
-  - "user asks for a deep-dive 专题报告 / summit report on a vendor conference"
-  - "user says 按上次那个结构做 / use the same structure as last time"
-  - "user names a vendor event and wants an analyst-style written report with buyer guidance"
-not_for:
-  - "daily or weekly news briefings (use a daily-brief skill instead)"
-  - "vendor marketing collateral, keynote scripts, or product launch copy"
-  - "generic conference recaps with no analytical or buyer-facing requirement"
-metadata:
-  openclaw:
-    tags:
-      - industry-research
-      - analyst-report
-      - conference-analysis
-      - competitive-intelligence
-      - executive-briefing
-      - html-report
-      - content-production
-tags: [industry-research, analyst-report, conference-analysis, competitive-intelligence, executive-briefing, html-report, content-production]
+description: Build an executive-oriented deep-dive industry report for a major data/AI vendor conference (e.g. Snowflake Summit, Databricks Data+AI Summit / DAIS, Microsoft Build, Google Cloud Next, AWS re:Invent). Use this when the user wants a "深度专题报告" / "专题报告" / "summit report" / "大会报告" for a vendor event, especially as a follow-up to a previous one (e.g. "等 databricks 大会过后用这个做报告"). Produces three aligned deliverables — light-theme HTML, full Markdown, and a WeCom (企微) push version — using a fixed 8-section structure optimized for an industry-insider / executive reader, held to Gartner/Forrester analyst-note standards (state-don't-instruct, vendor-data caveats, a role-based buyer-recommendations section, and confidence-tagged Strategic Planning Assumptions). The HTML follows a judgment-headline + lead + bullet-point reading contract and is optionally put through a reader-fit review. The STRUCTURE and VISUAL STYLE are the reusable asset; the CONTENT (insights, analysis frameworks, industry extension) must be freshly derived from the actual conference — never copy the previous report's specific analytical frameworks (e.g. a "七层治理生态") into a new vendor's report. Covers the proven workflow: research → core judgment → insights-first → product panorama as support → customer evidence → competitive landscape → buyer recommendations → conference-specific industry extension → summary.
+description_zh: 厂商大会深度专题报告
+description_en: Vendor summit deep-dive report
+version: "1.0.1""
+agent_created: true
 ---
 
-# Vendor Summit Report
+# vendor-summit-report
 
-Produce a deep-dive written report on a single vendor's flagship conference, aimed at an industry-insider /
-executive reader, and ship it in three formats that share one set of facts: a light-theme HTML page, a full
-Markdown master copy, and a short enterprise-chat push message.
-
-The **structure and visual system are the reusable asset**. The **content — insights, analytical frameworks,
-industry extension — must be derived fresh from the conference being reported on**. Never transplant a previous
-report's analytical framing into a new vendor's report.
+为数据/AI 厂商大会（Snowflake Summit、Databricks DAIS、Microsoft Build、Google Cloud Next、AWS re:Invent 等）生成面向行业内参/高管视角的深度专题报告。一次产出三个口径一致的版本：淡色 HTML + 完整 MD + 企微推送版。
 
 ## When to use
 
-Trigger when any of these hold:
-
-- The user asks for a "深度专题报告" / "专题报告" / "summit report" / "大会报告" on a vendor event.
-- The user says something like "等 X 大会过后用这个/这套做报告" or "按上次那个结构做".
-- A prior report of this class exists and the user wants the same structure reproduced for a new conference.
-
-Do not trigger for daily news briefings, marketing collateral, or generic recaps with no analytical requirement.
-
-## Fixed 8-section structure
-
-| # | Section | Content | Visual form |
-|---|---------|---------|-------------|
-| 01 | Core judgment | One-sentence thesis + strategic premise + 4 takeaways + key-figure strip + **data-provenance note** (one vendor caveat sentence) | verdict card + takeaway grid + fact strip + `.note` |
-| 02 | Specific observations | 4-5 **pure insights** (how to read it / what it means), no product parameters, no imperative or preachy sentences | `.card` × N: `.card-num` ("Observation 01…N") + `.card-h` judgment headline + `.lead` + `.pts`, conclusion line as `.pull` |
-| 03 | Product panorama | 5 strategic products with numbers, each tagged GA / Public Preview / Private Preview / planned + remaining announcements in a collapsible table + product-stack layering | `.card` (`.badges` status chips + `.card-h` + `.lead` + `.pts` + `.lim`) + `<details>` table + `.layer-stack` |
-| 04 | Customer evidence | 4-5 production cases, section head tagged "(vendor/customer-reported)" + analyst note | `.customer-grid` + `.info-box` analyst note containing `.pts` |
-| 05 | Competitive landscape | Comparison table + convergence judgment + **home turf vs away game** + strengths and risks | `.cmp-table` + `.comp-row` (strengths/risks as a `.swot` two-column block) |
-| 06 | **Buyer recommendations (the So-What)** | **Role-based** actionable judgments: data platform lead / AI platform lead / procurement / competing vendors | `.buyer-grid` × 4 (`.brole` + `.bjudg` judgment line + `.pts`) |
-| 07 | Industry extension | The **industry-level question this conference actually raised** (angle varies by event) + 2-4 open questions | `.pull-lead` + `.pts` + `.judg` + `.cmp-table` or `.layer-stack` as the proposition requires + `.q-item` (qnum + qh + p) |
-| 08 | Summary | One-screen wrap-up + short / medium / long-term judgments + **one Strategic Planning Assumption with a year and a confidence level** | `.summary-hero` + `.pts` + `.pull` + `.judgment` grid + `.spa` |
-
-Two rules that are easy to get wrong:
-
-- **Sections 05 and 07 carry content, not template.** A framework such as a "data gravity" thesis or a "multi-layer
-  governance stack" belongs to the conference that produced it. For a different vendor, discard the old framing and
-  derive a new extension angle from what this conference actually proposed. A different angle beats a forced fit.
-- **Section 05 must include a "home turf ≠ away game" layer.** A vendor's advantage in its home market does not
-  transfer to another market without additional evidence. Without this layer the section degenerates into restating
-  the vendor's own positioning as a conclusion.
-
-## Analyst-house standards
-
-These four turn a conference recap into an analyst research note. Missing any one of them drops the report back to
-vendor-friendly coverage.
-
-1. **State, don't instruct.** No imperative or preachy sentences; do not coach the reader on how to read.
-   - Bad: "发布与规划必须分清" / "评估这套叙事需先分清" / "must be distinguished first"
-   - Good (declarative): "Three announcements land now; the platform roadmap item lands later. The two have
-     different delivery horizons."
-   - Also strip meta-commentary and thinking traces: "the first thing to clarify…", "this is the most easily
-     overlooked / strategically highest statement", "the evidentiary basis for the observations above",
-     "this confirms: …" (that one makes the judgment for the reader). Give the conclusion and the evidence; let the
-     facts carry it.
-2. **Vendor data needs a caveat.** Any performance or scale figure (2-6x, 67%, millions of QPS, account counts)
-   sourced from the vendor or its customers must be marked `vendor-reported` / `customer-reported` plus
-   "not independently validated", with a recommendation to verify on the buyer's own workload. Never quote an
-   official "significantly better than competitor X" bare. Put a one-sentence data-provenance note in the core
-   judgment area, tag the customer-evidence section head "(vendor/customer-reported)", and add an analyst note.
-3. **The So-What is mandatory.** A dedicated "Buyer recommendations" section with role-based, actionable
-   judgments: data platform lead / AI platform lead / procurement / competing vendors. Typical judgments: don't
-   put non-GA capabilities on a production critical path, run a POC first; select interfaces by cross-platform
-   standard to avoid single-vendor lock-in; require reproducible benchmarks in the contract; when competing head-on
-   is uneconomic, attack a dimension where the other side has not built a moat.
-4. **Forecasts carry a confidence level and a year.** Ban absolutes ("inevitably", "certainly", "unshakeable",
-   "logically consistent", "decisively narrowing"). Use a **Strategic Planning Assumption**: "By 20XX, the share of
-   Y in scenario X rises; confidence: medium-high." Place one explicit SPA in the summary.
-
-## Reading layout contract
-
-Most of a report's value depends on whether the reader actually reads it. This section turns layout from an
-aesthetic preference into a checkable contract.
-
-### Three-part entry (every item must satisfy it)
-
-**Judgment headline + lead + bullet points.** If one of the three is missing, the item is not finished.
-
-- **Judgment headline** (`.card-h`): must stand on its own and be a judgment, not a noun phrase. No trailing period.
-  - Good: "The only thing localized was the storyteller, not the data foundation"
-  - Bad: "Product panorama" / "Competitive landscape" / "On the ontology architecture"
-- **Lead** (`.lead`): background and facts, 2-4 lines, lighter weight.
-- **Bullet points** (`.pts li`): one to two lines each, scannable. Use a list for parallel points; never pack them
-  into a run-on paragraph.
-
-### Component inventory
-
-| Component | Class | Purpose | When |
-|-----------|-------|---------|------|
-| Item card | `.card` (with `.card-num`) | Shared skeleton for observation, product and buyer items | When a judgment stands as its own entry |
-| Judgment headline | `.card-h` | Conclusion first | Reading the headline alone gives the full judgment |
-| Lead | `.lead` | Background and facts | Opening of an entry |
-| Bullet points | `.pts > li` | Parallel facts / evidence, square markers | Scannable at a glance |
-| Numeric emphasis | `.num` | Tabular-nums, bold | Product and fact layer only |
-| Pull block | `.pull` / `.pull-lead` | The single sentence carrying the judgment; `.pull-lead` for a section opener | The entry's conclusion |
-| Standalone judgment line | `.judg` | A judgment not attached to a card | Section-closing conclusion |
-| Boundary strip | `.lim` + `.lim-t` | Limits, risks, scope caveats | When a qualification must be explicit |
-| Footnote | `.note` | Data provenance, non-comparability statements | Where caveats cluster |
-| Status chips | `.badges > .badge` (`.b-ga` / `.b-prev` / `.b-arch`) | GA / preview / architecture layer | Replaces parenthetical prefixes |
-| Flow strip | `.flow > .flow-step` + `.flow-arrow` | Steps, ladder, pipeline | When order or progression matters |
-| Strengths vs risks | `.swot` + `.swot-col.pro` / `.con` | Two-column contrast | Turns a comma-spliced sentence into items |
-| Layer stack | `.layer-stack > .layer` | Layers with an **inclusion or dependency** relation | See the criteria below |
-| SPA block | `.spa` | Forecast with year and confidence | One per report, in the summary |
-
-### Component criteria (the two that get misused)
-
-- **`.layer-stack` boundary.** Use it only when the layers have an **inclusion or dependency** relation (an upper
-  layer depends on what the lower layer provides). When the participants are **parallel or competing**, use
-  `.cmp-table` or `.swot` instead. If a cross-vendor ecosystem layering is the analyst's own synthesis rather than
-  the vendor's own description, say so in the same passage.
-- **`.pull` vs `.judg`.** `.pull` belongs to a specific entry and states that entry's conclusion. `.judg` is a
-  section-level judgment that belongs to no single entry. Do not stack both in the same block.
-
-### Anti-patterns (any of these means rework)
-
-- A bare paragraph longer than ~200 Chinese characters.
-- A `.card-h` written as a noun phrase.
-- Turning every item in a section into a card, producing a wall of cards; with fewer than three items, use a
-  paragraph plus bullet points.
-- A `.num` carrying a product figure inside the observation layer.
-- A bullet point longer than two lines (it should be split, or moved into the lead).
-
-## Workflow
-
-### Step 1: [Deterministic] Confirm the event and the window
-
-- Identify the exact conference, its host vendor, its date(s), and the reporting window.
-- If two events of the same class fall in the window, confirm with the user which one this report covers.
-
-### Step 2: [LLM] Research
-
-Collect, using web search and page fetches:
-
-1. Every product announcement, with GA / preview status verified one by one.
-2. Financial backdrop: the vendor's most recent reported quarter.
-3. Customer cases with business-outcome numbers, recording whether each figure is vendor-reported or
-   customer-reported.
-4. Competitor moves in the same period.
-5. Analyst-house commentary.
-
-Press-report discipline: verify each item's original publication date falls inside the window; cross-verify
-single-source claims. **Prefer on-site coverage over pre-event previews** — a preview often blurs "next-generation
-version" into vagueness, while the on-site talk draws the line between "shipped" and "on the roadmap". A preview may
-name a future major version while the keynote clarifies that the current minor release is the shipped one and the
-major is planned.
-
-### Step 3: [LLM] Core judgment
-
-- Answer in one sentence: what is this vendor betting on?
-- Produce four takeaways.
-- Add a one-sentence **data-provenance note** in the core judgment area (conference performance and scale figures
-  are vendor- or customer-reported and not independently validated).
-
-### Step 4: [LLM] Observations
-
-- Write 4-5 observations. Each carries one insight, stated as a judgment, stripped of product parameters.
-- Each observation also needs its **judgment headline** (standalone-readable) plus lead and bullet points.
-- **State, don't instruct.** No "must be distinguished", "must first clarify", "should note", and no meta-commentary
-  or thinking traces.
-
-### Step 5: [LLM] Product panorama
-
-- Pick 5 strategic products and write them up with numbers; tag each with GA / Public Preview / Private Preview /
-  planned using `.badges` chips rather than a parenthetical prefix.
-- Remaining announcements go into a collapsible table.
-- If a genuine inclusion relation exists between stack layers, render it with `.layer-stack`.
-
-### Step 6: [LLM] Buyer recommendations
-
-- Cover the four roles: data platform lead, AI platform lead, procurement, competing vendors.
-- Content follows the actual conference, but the recurring logic holds: no production commitment on non-GA
-  capabilities; select interfaces by common standard to avoid lock-in; require reproducible benchmarks in the
-  contract; for competitors, attack a dimension where the other side has not built a moat.
-- Each role opens with a judgment line (`.bjudg`) followed by 2-4 bullet points.
-
-### Step 7: [LLM] Industry extension
-
-- Ask: what industry-level question did this conference actually raise? A standards contest, a paradigm shift, an
-  ecosystem land grab, or some capability becoming a new threshold? Extend along that line.
-- Use `.layer-stack` only when the proposition really is a layered structure with dependencies. For parallel or
-  competing participants use `.cmp-table` or `.swot`.
-- Add 2-4 open questions that stay genuinely open.
-
-### Step 8: [LLM] Summary and SPA
-
-- One-screen wrap-up plus short / medium / long-term judgments.
-- One Strategic Planning Assumption with a year and a confidence level. Ban absolutes.
-
-### Step 9: [Deterministic] Generate the three deliverables
-
-- Start from `templates/report-template.html`, replace content, keep the CSS, navigation logic, reveal script and
-  the full set of reading components.
-- Start from `templates/report-template.md` for the full Markdown master copy.
-- Start from `templates/wecom-template.md` for the push version.
-- **Three-format sync law:** finishing the Markdown does not mean the facts agree. At the end of every revision
-  round, run a cross-file key-string count comparison — `<h1>` title and subtitle, hero subtitle, deck line, key
-  facts table, table figures, caveat sentences — counting the same string in all three files. A mismatch means a
-  missed edit.
-
-### Step 10: [LLM] Layout pass on the HTML
-
-- Split the finished prose per the reading layout contract: identify each judgment sentence and promote it to
-  `.card-h`; background facts to `.lead`; parallel evidence to `.pts`; the conclusion sentence to `.pull`; caveats
-  to `.lim` or `.note`.
-- **This step only splits and emphasizes. It does not rewrite text.**
-- After the pass, run two checks: (a) structure balance — for each of `section` / `div` / `article` / `ul` / `li` /
-  `p` / `table` / `tr` / `td` / `strong` / `b` / `span` / `details` / `h3`, opening count equals closing count;
-  (b) zero content loss — dump a plain-text snapshot before the pass, diff character-level after, and classify every
-  difference into one of four buckets: quote normalization, punctuation adjusted by re-blocking, new structural
-  tags, known corrections. A fifth bucket means roll back and investigate.
-
-### Step 11: [Deterministic] Mechanical review
-
-- Check the observation layer for product figures that leaked out of the product layer.
-- Check for meta-commentary, imperative sentences and absolutes.
-- Check that every vendor figure carries a caveat, the buyer-recommendations section exists, and the SPA carries a
-  confidence level.
-- Check that every `.card-h` is a judgment and no bare long paragraph remains.
-- Check section numbering: the HTML comment number and the visible `.sec-no` must match.
-- Preview in a browser: the first screen is the core judgment, not navigation.
-- Grep for leftovers, e.g. `必须分清|需先分清|印证：|必然|难撼|逻辑自洽|决定性`.
-- Red-line quotas per report: em-dash `——` at most 5 occurrences; "不是…而是" / "而非" contrast constructions at
-  most 3. Note that in HTML these dashes often sit next to `</strong>` or `</span>`, so Markdown and HTML cannot
-  share one set of plain-text replacement anchors — dump the hits per file and decide each one individually.
-
-### Step 12: [LLM] Reader-fit review (recommended)
-
-Mechanical review guarantees "nothing is violated"; reader-fit guarantees "the reader actually understands".
-
-- **Positioning lock first**: genre / primary reader / reading task / central proposition / deliberately excluded
-  material / depth. This lock is the basis for grading later.
-- Choose 3-4 representative roles. For this class, **exclude** investors, media editors and general readers as
-  incompatible with the positioning. Prefer: enterprise decision-maker, domain expert, runtime and governance
-  engineer, cross-domain industry reader.
-- Put the same five questions to each: (1) What is the central proposition in one sentence? (2) Which passage did
-  you skip first? (3) Which claim felt under-evidenced? (4) Which number would you not cite? (5) What will you do
-  after reading, if anything?
-- Grade by positioning compatibility: must-fix (leaving it makes the reader adopt a wrong belief; usually a
-  positioning risk) / suggested / optional / reject-park (incompatible with the positioning, parked with a stated
-  reason).
-- Record conflicts explicitly rather than splitting the difference.
-- Limit the revision scope: fix must-fix and suggested only. **Revisions may not rewrite content** — only split,
-  emphasize, reorder, or add caveats.
-- Priority order: factual correctness → positioning integrity → core comprehension → technical depth → elegance →
-  distribution preference.
-- Recurring consensus blockers seen in practice: the assertion strength in tables and headings exceeds the wording
-  in the body and observations, and readers adopt the harder side; when multiple formats ship in parallel the caveat
-  lives in only one of them; a competitive section that only restates vendor positioning gets read as a conclusion.
-- Save the review document next to the report.
-
-### Step 13: [Deterministic] Deliver
-
-- Deliver the three files, HTML first.
-- If the workspace already has a publish or delivery script, reuse its pattern rather than writing a new one.
-- Deploy the HTML to a dedicated path so it does not overwrite other routes on the same site.
-- **Confirm the target channel with the user before pushing to any live group or public page.**
-
-## Hard Rules
-
-> These cannot be violated.
-
-1. **Structure is reusable; content is not.** Never carry a previous report's analytical framework into a new
-   vendor's report. Derive the extension angle from the conference being covered.
-2. **Observation layer and product layer are strictly separated.** The observation layer states how to read
-   something and carries no product figures; figures live only in the product layer.
-3. **Every vendor- or customer-sourced figure carries a caveat** — vendor/customer-reported plus not-independently-
-   validated — with no bare "significantly better than competitor X".
-4. **The buyer-recommendations section is mandatory** and must cover the four roles.
-5. **Forecasts carry a year and a confidence level.** No absolutes.
-6. **No meta-commentary, no imperative or preachy sentences.** No "our report", "this report argues", "must first
-   clarify", "this confirms".
-7. **No bare paragraph longer than ~200 characters.** Every entry uses judgment headline + lead + bullet points.
-8. **Three formats must agree** on the same figures, the same cases and the same caveats, verified by a cross-file
-   key-string count.
-9. **Section numbering must be self-consistent** — HTML comment number equals visible `.sec-no`.
-10. **The push version must never drop the buyer recommendations.** When over budget, cut the customer evidence
-    first, then the open questions.
-
-## Failure Handling
-
-| Scenario | Action |
-|----------|--------|
-| The conference date or host vendor is ambiguous | Stop and ask which event is in scope before researching |
-| GA / preview status cannot be verified from a primary source | Do not guess; either label it as unconfirmed in the report or drop the item |
-| A key figure appears in only one secondary source | Cross-verify; if unverifiable, attribute it inline and add a caveat, or omit it |
-| A vendor figure has no test conditions disclosed | Keep the figure but add an explicit caveat that the conditions were not published and the number is not reproducible |
-| The observation layer has absorbed product figures | Move the figures to the product layer; the observation layer states the judgment only |
-| The HTML was regenerated and a tag count is unbalanced | Roll back to the last balanced version and redo the layout pass; do not patch by hand |
-| The layout pass changed wording | Restore the original wording; the pass may only split and emphasize |
-| The push version exceeds the byte budget | Cut in this order: customer evidence, then open questions. Never cut buyer recommendations |
-| Two formats disagree on a figure or a caveat | Re-run the cross-file key-string count, fix the stale file, then re-verify |
-| The reader-fit review reports a positioning-level conflict | Resolve at the positioning level, not by adding disclaimers |
-
-## Output Format
-
-Three files per report, one shared set of facts.
-
-### 1. HTML (primary, light theme)
-
-- Single self-contained page, light background with white cards and a blue accent, optional secondary accents.
-- Fixed top navigation with two-character labels; compact hero; no large table-of-contents card.
-- Scroll-reveal animation and active-section highlighting.
-- All reading components from the layout contract available in the stylesheet.
-- Status chips instead of parenthetical status prefixes.
-- Collapsible tables folded by default.
-
-### 2. Markdown (master copy)
-
-- Same 8 sections, same order, same figures.
-- Judgment headline plus bullet points, expressed with Markdown primitives (bold judgment line, then a list).
-- Tables where the HTML uses them.
-
-### 3. Push version (short read)
-
-- Plain-text title plus short paragraphs. No emoji, no decorative symbols, no horizontal rules, no keycap numbers,
-  no star ratings.
-- Section marker: `▍`.
-- Separator is a full-width colon `：`; never a vertical bar `｜`.
-- No Markdown bold syntax — write complete sentences.
-- Byte budget by content density, hard ceiling 4,096 bytes, measured as
-  `len(text.encode('utf-8'))`, not character count:
-  - single-launch event or one product line: ≤ 2,500 bytes
-  - typical conference, two product lines or one strategic concept: ≤ 3,500 bytes
-  - very high density (multiple product lines + multiple cases + role-based buyer recommendations): 3,500-3,900 bytes
-- Over budget, cut in this order: customer evidence, then open questions. Never cut buyer recommendations.
-- Role-based recommendations are the byte sink: keep each role to 40-60 characters; anything longer belongs in the
-  HTML.
-- Required sections: core judgment (with vendor caveat), observations, product panorama, competitive landscape,
-  **buyer recommendations**, open questions, summary (with SPA). Sections may be merged or compressed but not
-  deleted.
-- Final line is fixed: "完整报告见 HTML 附件。"
-
-## Templates
-
-- `templates/report-template.html` — full light-theme HTML template: CSS variables, fixed navigation, fact strip,
-  verdict card, the complete reading-component set, layer stack, scroll reveal, active-nav script. Its header
-  comment carries four blocks: reuse list, mandatory replacements, reading contract, component criteria.
-- `templates/report-template.md` — the Markdown master copy, 8 sections.
-- `templates/wecom-template.md` — the push version, `▍` section markers, full-width colon separator, byte-budget
-  tiers.
-
-The three templates are a completed report used as a **structural and visual worked example**. Reuse the CSS, the
-reading components, the section skeleton, the navigation logic and the writing discipline. Replace every vendor
-name, product, figure, case and insight, plus the analytical frameworks of sections 05, 06 and 07.
+触发条件（满足任一即用）：
+- 用户要求为某个厂商大会做"深度专题报告""专题报告""summit report""大会报告"
+- 用户明确说"等 X 大会过后用这个/这套做报告""按上次 Snowflake 那个结构做"
+- 已有一份同类报告，需要为新大会复刻同样的结构和视觉风格
+
+典型场景：Snowflake Summit 报告做完后，Databricks DAIS 结束 → 用同一套结构产出 DAIS 报告。
+
+## 核心设计哲学（务必遵守，这是反复打磨出来的）
+
+1. **内参视角，不是研究报告**：以事实为基础，有自己的洞察，但不做满篇解读。判断/洞察先行，产品是支撑。
+2. **洞察先行，产品支撑**：章节顺序是「判断 → 观察 → 产品 → 案例 → 竞争 → 买方建议 → 行业 → 总结」。观察排在产品**前面**。
+3. **观察层与产品层严格分工（关键，否则会重复）**：
+   - 观察层只讲「怎么看 / 意味着什么」——纯判断，**不写产品参数/数字**（HTML 里也不用 `.num`）
+   - 产品层只讲「是什么 / 数字」——客观事实
+   - 同一个数字（举例：Snowflake 报告里的准确率 24%→86%、账户数——你的报告里换成本次大会的数字）只能出现在产品层，观察层用"详见产品章节"指代
+4. **禁止元沟通语言**：全文不出现"我们的 XX""本报告认为"等过程性/自指表述。
+5. **开头留存门**：前两段必须先让读者知道大会或厂商交付了什么、缺了什么、为什么值得继续读；法人链条、合同、底层基础设施只保留能直接解释核心判断的 1–2 句，其余移入产品／边界章节。前三段仍在解释签约流程而没有给出命题，视为开头失焦，必须重写。
+6. **同行范式不能被边界清单吞掉**：如果研究材料里出现可迁移的产品范式、架构选择或技术路线（如语义层进入治理目录、Agent 控制平面、上下文工程），必须形成独立的观察或产品条目。区域不可用清单、合规结构和预算竞争只能作为证据域，不能替代同行读者要带走的技术判断。
+7. **导航不抢首屏**：不放独立的大 TOC 卡片；顶栏导航用 2 字短标签；Hero 紧凑；让"核心判断"成为打开页面的第一视觉焦点。
+8. **表格非必须不用**：能用叙述/卡片替代就替代；确需表格时优先紧凑横条（fact-strip）或可折叠表。
+9. **淡色风格**：浅底白卡蓝色强调，参见模板 CSS 变量。
+10. **结构可复用，内容不可复制（最重要的一条）**：这个 skill 复用的是**结构骨架 + 视觉风格 + 写作纪律**。每场大会的**具体内容——洞察、分析框架、行业延伸的切入角度——必须从本次大会实际发布的内容重新推导**。模板里出现的任何特定分析框架（如 Snowflake 报告里的"多层治理生态""数据重力论"）都是**上一份报告的产物，是示例不是填空模板**。做新报告时：先看这场大会真正讲了什么、抛出了什么行业级命题，再顺着它做合理延伸。宁可延伸角度不同，也不要把旧框架硬塞进来凑格式。
+9. **阅读友好优先于文字密度**：每节先给结论，再给证据。禁止 200 字以上的裸段落——一律拆成「判断句标题 + 导语 + 要点行」。这是 2026-09-11 版式重构确立的契约，详见下节。
+11. **对外中立**：报告面向外部读者，不出现内部策划语境、内部人名、内部主张代号。厂商的公开词汇（如某厂商官方提出的架构名）可以使用，但必须有厂商公开视角支撑。
+
+## 分析师机构标准（Gartner/Forrester 级，2026-07 从 FFA 报告六轮打磨沉淀，务必遵守）
+
+这四条是"内参综述"升级为"analyst research note"的关键。缺任何一条，报告都会退回到"厂商 friendly coverage"的水平。
+
+1. **只陈述不发指令**——报告正文**禁止祈使句/说教句**，不教读者怎么读。
+   - ❌"发布与规划必须分清""评估这套叙事需先分清""必须先厘清 X""应当注意 Y"
+   - ✅ 改陈述句："本届 3 项发布落在当下、Flink 3.0 落在未来路线，二者兑现进度不同"
+   - 同类要删的还有元信息/思考痕迹："需要厘清的第一个事实…""这是最容易被忽略/战略层级最高的表述""前述观察的事实支撑""印证：…"（"印证"是替读者下判断）。直接给结论+证据，让事实说话。
+2. **vendor 数据必须加 caveat**——所有性能/规模数字（2-6x、67%、百万 QPS、账户数等）若来自厂商或其客户，必须标注 `vendor-reported` / `customer-reported` + "未经独立验证/基准测试"，并建议以自有负载 POC 验证。**禁止裸引官方"显著优于竞品 X"**（如"显著优于 Ray/Daft"）。核心判断区加一句"数据来源说明"，客户实证表列头标"（vendor/customer-reported）"并加"分析师注"。
+3. **必须有 So-What（分角色买方建议）**——这是 analyst research 区别于会议综述的灵魂。独立章节"对买方的建议"，按角色给可执行判断：
+   - 数据平台负责人 / AI 平台负责人 / 采购 / 竞品厂商（含国内云厂商）
+   - 典型判断：未 GA 的产品不押生产关键路径先做 POC；MCP 等接口按跨平台通用标准选型避免单一厂商锁定；合同里要求 Keynote 性能数字可复现基准；竞品对标不经济时找对方尚未建壁垒的维度切入。
+4. **预测用置信度 + 年份措辞**——忌"必然/一定/难撼/逻辑自洽/决定性收窄"等绝对词。改为带概率和时间窗的 **Strategic Planning Assumption（SPA）**："到 20XX 年底，X 场景的 Y 占比上升，置信度中等偏高"。结论区放一条明确的 SPA。
+
+## 阅读版式契约（2026-09-11 确立，硬性）
+
+报告的绝大部分价值取决于读者**是否真的读进去**。这一节把"版式"从审美问题变成可核查的契约。
+
+### 三段式（每个条目必须满足）
+
+**判断句标题 + 导语 + 要点行**。三者缺一即视为该条目未完成。
+
+- **判断句标题**（`.card-h`）：必须可独立读懂，是判断而不是名词短语。不加句号。
+  - ✅"被本地化的只有讲故事的人，不是数据的地基"
+  - ❌"产品全景""竞争格局""关于本体架构"
+- **导语**（`.lead`）：交代背景与事实基础，2-4 行，字重稍轻。
+- **要点行**（`.pts li`）：单条控制在 1-2 行，可扫读。并列要点用列表，不要写成连续段落。
+
+### 组件清单
+
+| 组件 | 类名 | 用途 | 判据 |
+|------|------|------|------|
+| 条目卡 | `.card`（内含 `.card-num`） | 观察、产品、买方条目的统一骨架 | 一条独立判断成条时用 |
+| 判断句标题 | `.card-h` | 结论先行 | 只看标题能获得完整判断 |
+| 导语 | `.lead` | 背景与事实 | 条目开头交代事实基础 |
+| 要点行 | `.pts > li` | 并列事实/论据，方点标记 | 一屏内可扫读 |
+| 数字强调 | `.num` | tabular-nums 加粗 | 只出现在产品层与事实层 |
+| 引述块 | `.pull` / `.pull-lead` | 承担判断的单句；`.pull-lead` 用于节首 | 该条目的结论句 |
+| 独立判断行 | `.judg` | 不依附卡片的判断 | 段末结论 |
+| 限定条 | `.lim` + `.lim-t` | 边界、风险、口径 caveat | 有需要显式标注的限制 |
+| 小字注 | `.note` | 数据来源、口径不可比声明 | caveat 集中出现处 |
+| 状态徽标 | `.badges > .badge`（`.b-ga` / `.b-prev` / `.b-arch`） | GA / 预览 / 架构层 | 替代原来的括号前缀 |
+| 流程条 | `.flow > .flow-step` + `.flow-arrow` | 步骤、阶梯、管线 | 有先后或递进关系 |
+| 优劣势双列 | `.swot` + `.swot-col.pro` / `.con` | 优势与风险并列 | 把顿号长句拆成条目 |
+| 分层栈 | `.layer-stack > .layer` | 层间存在**包含或依赖**关系 | 见下方判据 |
+| SPA 块 | `.spa` | 带年份与置信度的预测 | 总结区一条 |
+
+### 组件判据（容易用错的两个）
+
+- **`.layer-stack` 的使用边界**：只有当层与层之间存在**包含或依赖关系**（上层依赖下层提供的能力）时才用。若各参与方是**并列或竞争关系**，改用 `.cmp-table` 或 `.swot`。跨厂商的生态分层若由分析者归纳而非厂商自述，必须在同段加一句说明视角来源。
+- **`.pull` 与 `.judg`**：`.pull` 依附于某个条目、是该条目的结论；`.judg` 用于板块级的独立判断，不归任何条目。二者不要连用堆在同一段。
+
+### 反模式（出现即返工）
+
+- 200 字以上的裸段落
+- `.card-h` 写成名词短语
+- 同一板块内所有内容都上卡片，形成"卡片墙"；条目少于 3 条时用连续段落加要点行即可
+- 观察层出现 `.num` 承载产品数字
+- 要点行单条超过 2 行（说明该拆成两条，或应写进导语）
+
+## 固定 8 段结构
+
+| # | 章节 | 内容 | 视觉形式 |
+|---|------|------|---------|
+| 01 | 核心判断 | 1 句核心命题 + 战略前提 + 4 个 takeaway + 关键数字 fact-strip + **数据来源说明**（一句 vendor caveat） | verdict 卡 + takeaway 网格 + fact-strip + `.note` |
+| 02 | 具体观察 | 4-5 个**纯洞察**（怎么看/意味着什么），无产品参数，**无祈使/说教句** | `.card` × N：card-num「观察 01…N」+ `.card-h` 判断句 + `.lead` + `.pts`，结论句用 `.pull` |
+| 03 | 产品全景 | 5 个战略级产品叙述（数字在此，标 GA/Preview 状态）+ 其余产品可折叠表 + 产品栈分层 | `.card`（`.badges` 状态徽标 + `.card-h` + `.lead` + `.pts` + `.lim`）+ details 折叠表 + `.layer-stack` |
+| 04 | 客户实证 | 4-5 个生产环境案例，**列头/节首标"（vendor/customer-reported）"** + 分析师注 | `.customer-grid` + `.info-box` 分析师注（内含 `.pts`） |
+| 05 | 竞争格局 | 对比表 + 收敛判断 + **主场≠客场** + 优势风险。分析角度按本次大会实际竞争态势定 | `.cmp-table` + `.comp-row`（优势风险用 `.swot` 双列） |
+| 06 | **对买方的建议（So-What）** | **分角色**可执行建议：数据平台/AI平台/采购/竞品厂商 | `.buyer-grid` × 4（`.brole` + `.bjudg` 判断句 + `.pts`） |
+| 07 | 行业延伸 | **本次大会引出的行业级命题**（角度随会而变）+ 2-4 个待验证问题 | `.pull-lead` + `.pts` + `.judg` + 视命题选 `.cmp-table` / `.layer-stack` + `.q-item`（qnum + qh + p） |
+| 08 | 总结 | 一页式收束 + 短期/中期/长期三层判断 + **一条 SPA（带年份+置信度）** | `.summary-hero` + `.pts` + `.pull` + `.judgment` 网格 + `.spa` |
+
+> ⚠️ 05/07 段的**分析框架是内容不是模板**。Snowflake 报告用了"数据重力论""多层治理生态"——那是 Snowflake Summit 的实际命题所引出的。做别家大会时，**丢掉这些具体框架**，从本次大会真正抛出的行业命题重新提炼延伸角度（Databricks 可能是开放湖仓/Lakehouse 标准之争、微软可能是生产力 Agent 的组织渗透，等等）。
+> ⚠️ **05 段必须保留"主场≠客场"这一层**：厂商在其主场市场的优势，外推到其他市场需要额外证据。缺这一层，竞争格局会变成把厂商自述的定位当结论。
+> ⚠️ 06 段"对买方的建议"是**分析师标准的硬性要求**（见上方分析师机构标准第 3 条），不可省略。角色和建议内容按本次大会实际情况定，但四类角色框架保持。
+
+## Steps
+
+1. **研究阶段**：用 WebSearch / WebFetch 收集大会的：① 全部产品公告（逐条核实 GA/Preview 状态）② 财务背景（最近一期财报）③ 客户案例（带业务结果数字，记录数字来源=vendor 还是 customer）④ 竞争对手同期动作 ⑤ 分析师观点。逐条确认发布日期在窗口内，单一信源需交叉验证。**大会材料优先现场稿而非会前预告稿**（预告常把"下一代版本"模糊带过，现场才讲清"已发布 vs 规划路线"的分野——FFA 案例：预告用"Flink 3.0"，现场才明确 2.0=Cloud Native 已发布、3.0=Agent Native 规划）。
+2. **提炼核心判断**：用一句话回答"这家厂商在赌什么"。提炼 4 个 takeaway。**核心判断区加一句"数据来源说明"**（会上性能/规模数字为 vendor/customer-reported，未经独立验证）。
+3. **写 5 个观察**：每条一个洞察，纯判断，剥离所有产品参数。**只陈述不发指令**——不写"必须分清 X""需先厘清 Y"这类祈使/说教句，不写"需要厘清的第一个事实""印证：…"这类元信息/思考痕迹。**每条同时给出判断句标题**（可独立读懂，见阅读版式契约），再展开导语与要点行。
+4. **整理产品全景**：挑 5 个战略级产品做叙述（含数字），逐条标 GA/Public Preview/Private Preview/规划 状态，状态用 `.badges` 徽标而非括号前缀；其余进折叠表。产品栈分层若确实存在包含关系，用 `.layer-stack`。
+4.3 **写"对买方的建议"（So-What，必做）**：分四类角色给可执行判断——数据平台负责人 / AI 平台负责人 / 采购 / 竞品厂商（含国内云厂商）。内容按本次大会实际情况定，但典型逻辑：未 GA 不押生产先 POC、接口按通用标准选型避免锁定、合同要求可复现基准、竞品找对方未建壁垒的维度切入。每角色先给一句判断（`.bjudg`），再给 2-4 条要点。
+4.5 **提炼行业延伸角度（不要套旧框架）**：问自己——这场大会真正抛出了什么行业级命题？是标准之争、范式迁移、生态卡位、还是某个能力成为新门槛？顺着它做延伸。只有当本次大会内容确实指向"分层结构且层间存在依赖"这类命题时，才用 `.layer-stack`；参与方是并列竞争关系时改用 `.cmp-table` 或 `.swot`。
+4.7 **总结区放一条 SPA**：带年份+置信度的 Strategic Planning Assumption，忌"必然/难撼/决定性"等绝对词。
+5. **生成三版**：
+   - 复制 `@templates/report-template.html` 作为 HTML 基础，替换内容（保留 CSS、导航逻辑、reveal 脚本、全部阅读组件样式）
+   - 复制 `@templates/report-template.md` 作为完整 MD
+   - 复制 `@templates/wecom-template.md` 作为企微版基础
+   - **三口径同步铁律**：MD 改完不等于口径统一。每轮修订收尾必须做一次跨文件关键串计数比对——`<h1>` 主副标题 / hero 副标题 / 抬头 / 关键事实表 / 表格口径 / caveat 句，逐项在三个文件里对同一字符串计数，数量不一致即漏改（2026-09-11 教训：HTML 的 `<h1>` 副标题漏同步一轮才发现）。
+5.5 **HTML 版式落地（三段式切分）**：把已成稿的叙述按阅读版式契约切分——每段识别判断句→提升为 `.card-h`，事实背景→`.lead`，并列论据→`.pts`，结论句→`.pull`，caveat→`.lim`/`.note`。**此步只做切分与强调，不改写文字**。改版后必做两项核验：① 结构配平（section/div/article/ul/li/p/table/tr/td/strong/b/span/details/h3 逐一 open=close）；② 内容零丢失——改版前 dump 纯文本快照，改版后按字符级 diff，差异须逐条归入「引号规范 / 标点随分块调整 / 新增结构标签 / 已知修正」四类，出现第五类即回滚排查。
+6. **企微版规范**：分隔符用中文冒号"："，**禁止竖线"｜"**；分节标记统一 `▍`；结构=核心判断（含 vendor caveat）+五观察+产品全景+竞争+**对买方的建议**+待验证问题+总结（含 SPA）；结尾固定"完整报告见 HTML 附件。"；同样禁祈使句/绝对词。
+   - **字节预算按内容密度分层**（硬上限 4,096 字节，用 `len(text.encode('utf-8'))` 实测，不要目测字符数）：
+     - 单场发布会、单一产品线：≤ 2,500 字节
+     - 常规大会、两条产品线或一个战略概念：≤ 3,500 字节
+     - 信息密度极高（多产品线 + 多案例 + 买方分角色建议同时成立）：3,500–3,900 字节
+   - 超预算的删减顺序：先删「客户实证」，再删「待验证的问题」，**不可删「对买方的建议」**
+   - 分角色建议是字节黑洞，四个角色各留 40-60 字，超过就说明该内容应留在 HTML 里
+7. **机械复核（格式与红线）**：检查观察层是否混入产品数字（去重）；检查是否有元沟通语言/祈使句/绝对词；检查 vendor 数字是否都有 caveat、买方建议章节是否存在、SPA 是否带置信度；检查 `.card-h` 是否都是判断句、有无残留裸段落；检查章节编号无 off-by-one（`.sec-no` 与注释编号一致）；HTML 用浏览器预览确认首屏是核心判断而非导航。grep 复核残留：`必须分清|需先分清|印证：|必然|难撼|逻辑自洽|决定性`。红线配额：破折号 `——` 全篇 ≤ 5、对举句（"不是…而是""而非"）≤ 3。注意 `.card` 类文献里的破折号常紧邻 `</strong>`/`</span>`，MD 与 HTML 不能共用同一组替换锚点，必须分别 dump 命中后逐条判定。
+7.5 **reader-fit 阅读测试（推荐，机制取自 tech-content-review-panel §Step R）**：机械复核保证的是"没有违规"，reader-fit 保证的是"读者真的读得懂"。适用于本类报告，审核文档与报告同目录落盘，命名 `<报告名>_reader-fit审核.md`。
+   - **R0 定位锁**：先写清文类（厂商大会深度专题）/ 主读者（企业侧数据与 AI 平台决策者）/ 阅读任务（判断是否以及何时评估该厂商）/ 中心命题 / 刻意排除的内容 / 深度层级。定位锁是后续分级判据，不能省。
+   - **R1 选 3-4 个代表角色**：本类报告**不选**投资人、媒体编辑、泛读者（与定位不兼容）。优先选：企业决策者（数据平台或 AI 平台负责人）、领域专家（同类技术负责人）、运行时与治理工程师、跨域行业读者。
+   - **R2 统一五问**：① 中心命题用一句话是什么？② 哪一段你最先跳过？③ 哪句断言你觉得证据不足？④ 哪个数字你不敢引用？⑤ 读完你会做什么（或什么都不做）？
+   - **R3 按定位兼容性分级**：must-fix（不改则读者采信错误，多数是定位类风险）/ suggested / optional / reject-park（与定位不兼容的意见，显式搁置并说明理由）。
+   - **R4 冲突显式记录**：多角色意见冲突时不要折中，写清冲突点与取舍依据。
+   - **R5 限定修订范围**：只改 must-fix + suggested，不重写全文。**修订不得改写内容**，只允许切分、强调、调序、补 caveat。
+   - **优先级顺序**：factual correctness → positioning integrity → core comprehension → technical depth → elegance → distribution preference。
+   - **高频共识障碍（本类报告实测）**：① 表格与标题层的断言强度强于正文与观察层口径，读者会采信更硬的那一侧——表格里的口径必须与正文同级；② 多口径并行时 caveat 只写在一份材料里，另外两份读者看不到；③ 竞争格局若只写厂商自述定位，读者会当成结论。
+8. **交付**：deliver_attachments 交付三个文件（HTML 第一、MD 第二、企微第三）。如需推送，复用项目 `push_*.py` 脚本模式（WeComChannel + GitHubPagesChannel）：照抄一份现成 `push_*.py`（如 push_ffa_report.py），只改 md_path/html_path/GITHUB_REMOTE_PATH/commit 文案；企微走正式群前按"对外操作先确认"跟用户核对渠道与目标群；GitHub Pages 部署到 `analyst-perspectives/<slug>.html` 独立路径，不覆盖日报 index.html。**Pages 上传成功不等于立即可访问**，构建期间返回 404，需轮询（每次 10 秒，交叉验证一个已知可用路径先确认 Pages 本身正常）。
+
+## 模板文件
+
+- `@templates/report-template.html` — 淡色 HTML 全量模板（CSS 变量、固定导航、fact-strip、verdict 卡、**全套阅读组件**、layer-stack、scroll reveal、nav active 脚本）。文件头有复用清单、必须替换项、版式契约、组件判据四段说明。
+- `@templates/report-template.md` — 完整 MD 模板（8 段结构参照）
+- `@templates/wecom-template.md` — 企微推送版模板（`▍` 分节、中文冒号、字节预算分层，正文实测约 3.7K 字节）
+
+**这三个模板是 Snowflake Summit 2026 的成品**。复用它们的：CSS/样式、阅读组件、章节骨架、导航逻辑、写作纪律、企微格式。**替换掉它们的**：所有厂商名、产品、数字、案例、洞察，以及 05/06/07 段的具体分析框架。样式和结构不要动，内容全部换新。
 
 ## Pitfalls
 
-- **Forcing an old framework** (most serious): transplanting a previous report's analytical framing into a different
-  vendor's report to fill section 07. That framing is content, not template.
-- **Observation and product layers repeating**: the most common defect. If the observation writes the figures, the
-  product section writes them again, and the reader reads it twice.
-- **Wall-of-text**: a continuous 200-300 character paragraph. This is the main reason a report looks professional
-  and nobody finishes it.
-- **Judgment headline written as a noun phrase**: wastes the line most likely to be read.
-- **Section numbering off by one**: after any restructure, verify each section's comment number against the visible
-  `.sec-no`.
-- **Updating only one of the three formats**: the Markdown is fixed but the HTML `<h1>` subtitle, hero subtitle and
-  table figures still hold the old wording. Always run the cross-file count at the end.
-- **Table wording stronger than body wording**: the table says "integrated" while the body says "acquisition just
-  closed", and the reader believes the table. Assertion strength must match across layers.
-- **Navigation eating the first screen**: no standalone table-of-contents card, no tall hero.
-- **Push version over the byte ceiling**: measure; do not eyeball. Cut in the stated order.
-- **Vertical bar as separator in the push version**: use the full-width colon.
-- **Product status guessed**: GA / Public Preview / Private Preview / Alpha must be verified one by one.
-- **Vendor figures quoted bare**: credibility collapses.
-- **Buyer recommendations missing**: the report falls back to being a conference recap.
-- **Forecasts using absolutes**: downgrade to a year-and-confidence SPA.
-- **Competitive section missing home turf vs away game**: the vendor's home-market advantage gets read as universal.
-- **Competitive section duplicating the observations**: if the observations already covered data gravity or model
-  commoditization, the competitive section must take a different angle (for instance, how the three vendors' data
-  shapes differ).
-- **Using `.layer-stack` for parallel relationships**: it implies architectural inheritance that does not exist.
+- **硬套旧框架（最严重）**：把 Snowflake 报告的"多层治理生态""数据重力论"原样搬进别家大会的报告，为了凑齐 07 段而生拉硬拽。这些是内容不是模板——必须从本次大会实际内容重新提炼延伸角度。宁可换个完全不同的行业命题，也不硬塞。
+- **观察与产品重复**：最常见的坑。观察写了"7100 账户/24→86%"，产品又写一遍 → 读者读两遍。务必让观察只讲判断，连 `.num` 都不用。
+- **大段文字堆砌（2026-09-11 新增）**：整段 200-300 字的连续叙述，读者扫读时抓不到要点。这是"报告看起来专业但没人读完"的主因。必须切成判断句标题 + 导语 + 要点行。
+- **判断句标题写成名词短语**：`.card-h` 写"产品全景""本体架构"等于浪费了最容易读到的一行。要写成可独立读懂的判断。
+- **章节编号 off-by-one**：HTML 模板历史上出现过注释写 07、`.sec-no` 显示 06 的问题。改版后逐个 section 核对注释编号与 `.sec-no` 一致。
+- **三口径只改一份**：MD 改完就以为统一了，HTML 的 `<h1>` 副标题、hero 副标题、表格口径还留着旧版。收尾必须做跨文件关键串计数比对。
+- **table 口径比正文硬**：表格里写"已整合"，正文写"收购刚完成"，读者信表格。表格与正文的断言强度必须同级。
+- **导航占首屏**：不要加独立 TOC 大卡片；Hero 不要太高。
+- **企微版超 4096 字节**：必须实测 `len(text.encode('utf-8'))`，超了按分层的删减顺序处理，别目测、别先删买方建议。
+- **企微版用了竖线**：必须用中文冒号"："。
+- **产品状态写错**：GA/Public Preview/Private Preview/Alpha 必须逐条核实，别想当然。
+- **元沟通语言混入**："我们的报告""本文认为"等一律删除。
+- **祈使/说教句混入（分析师标准硬伤）**："X 必须分清""需先厘清 Y""应当注意 Z"——在教读者怎么读，删掉改陈述句。"印证：…"是替读者下判断，也删。
+- **vendor 数字裸引（credibility 归零）**：2-6x/67%/百万 QPS 等直接当客观事实写、或裸引官方"显著优于竞品"，没有 vendor/customer-reported + 未独立验证 caveat。Gartner/Forrester 会直接判整篇不可信。
+- **缺买方建议（退回会议综述）**：只描述格局不给"买方该干嘛"。So-What 分角色建议是 analyst research 的灵魂，不可省。
+- **预测用绝对词**："必然/一定/难撼/逻辑自洽/决定性收窄"——降调为带置信度+年份的 SPA。
+- **竞争格局缺"主场≠客场"**：把厂商在主场市场的优势直接当成其在别的市场也成立，读者会当成结论采信。
+- **路径打错**：项目目录是 `data-ai-daily-brief`（注意不是 daili）。
+- **竞争格局与观察雷同**：如果观察里讲了"数据重力/模型商品化"，竞争格局的同主题要换角度（如讲"三家数据形态分歧"），避免重复。
+- **把「判断句标题」执行成名词并列**：两个抽象名词并列、字数合格、语气像结论，不代表读者能读出对象—关系—方向。标题单独抽出时必须回答「谁与谁发生什么关系，哪一侧受限，结果是什么」；如「被动适配与主动多云」应继续压成「接入既有云，不能自建区域」。
+- **证据先于命题的开头**：先讲签约主体、底层云和法律流程，三段后读者仍不知道厂商交付了什么、缺了什么。前两段先给反常事实、客户价值与核心判断，法人结构只留能解释判断的最少信息。
+- **边界清单吞掉产品范式**：不可用功能清单与合规结构很容易写得扎实，却把语义层进入治理目录、Agent 控制平面、上下文工程等同行可迁移路线压成背景句。范式必须独立成条，数字再放产品事实层。
+- **用 `.layer-stack` 呈现并列关系**：层与层之间不是包含/依赖关系时，分层栈会误导读者以为存在架构承继。并列或竞争关系用 `.cmp-table` / `.swot`。
 
 ## Verification
 
-- [ ] Section order is judgment → observations → products → cases → competition → **buyer recommendations** →
-      industry → summary (8 sections), with `.sec-no` 01-08 and no numbering off by one
-- [ ] Section 07's framework comes from this conference, with no residue of a previous report's framing
-- [ ] Section 05 includes a home turf vs away game layer
-- [ ] Insights, propositions and cases are all from this conference, with no residue from a previous report
-- [ ] The observation layer contains no product figures and no `.num`
-- [ ] Layout contract met: every entry has judgment headline + lead + bullet points; every `.card-h` is a standalone
-      judgment rather than a noun phrase; no bare paragraph over ~200 characters
-- [ ] Components used correctly: statuses as `.badges`; `.layer-stack` only for inclusion or dependency relations;
-      `.pull` and `.judg` not stacked
-- [ ] Layout pass checks passed: tag counts balanced; character-level diff fully classified into the four buckets
-- [ ] No meta-commentary, no imperative sentences, no absolutes
-- [ ] Red-line quotas: `——` at most 5; contrast constructions at most 3
-- [ ] Every vendor or customer figure carries a caveat; no bare "significantly better than competitor X"
-- [ ] A standalone buyer-recommendations section exists with all four roles, each with a judgment line plus bullets
-- [ ] The summary contains one SPA with a year and a confidence level
-- [ ] The HTML first screen is the core judgment, not navigation
-- [ ] The push version measures inside its density band, uses `▍` markers and a full-width colon, carries the vendor
-      caveat and the buyer recommendations, and contains no imperative sentences or absolutes
-- [ ] The three formats agree on figures, cases and caveats, confirmed by the cross-file key-string count
-- [ ] If a reader-fit review was run, the review document is saved and every must-fix item is resolved, with parked
-      items recorded
-- [ ] Every product's GA / preview status verified
-- [ ] HTML previews correctly: collapsible tables folded, reveal animation and active navigation working
-
-## 中文说明
-
-本 skill 面向厂商大会（Snowflake Summit、Databricks Data+AI Summit、Microsoft Build、Google Cloud Next、
-AWS re:Invent 等）生成面向行业内参与高管视角的深度专题报告，一次产出三个口径一致的版本：淡色 HTML、
-完整 Markdown、企业 IM 速读版。
-
-复用的是**结构骨架、视觉风格与写作纪律**；**洞察、分析框架与行业延伸角度必须从本次大会的实际内容重新
-推导**，不得把上一份报告的具体框架（例如某家的"数据重力论"或"多层治理生态"）硬塞进新报告。
-
-四条分析师机构标准为硬性：只陈述不发指令、厂商数据必须加 caveat、必须有分角色买方建议、预测必须带年份
-与置信度。
+- [ ] 章节顺序为 判断→观察→产品→案例→竞争→**买方建议**→行业→总结（8 段），`.sec-no` 为 01–08 无 off-by-one
+- [ ] **07 行业延伸的分析框架来自本次大会，不是照抄旧报告**（无残留的"多层生态"等 Snowflake 特定框架）
+- [ ] **05 竞争格局含"主场≠客场"这一层**
+- [ ] 洞察、命题、案例全部是本次大会的真实内容，无上一份报告的内容残留
+- [ ] 观察层无产品参数/数字（已下放到产品层，且未用 `.num`）
+- [ ] 开头留存门通过：前两段亮出交付价值、缺失边界和核心判断；前三段不以签约流程为主
+- [ ] 同行范式覆盖：策划中登记的可迁移产品范式／架构路线已形成独立观察或产品条目，没有被边界清单压成背景句
+- [ ] **版式契约达标**：每个条目有判断句标题 + 导语 + 要点行；`.card-h` 全部是可独立读懂的判断而非名词短语；标题单独抽出能读出对象—关系—方向；无 200 字以上裸段落
+- [ ] **组件使用正确**：状态用 `.badges` 徽标；`.layer-stack` 仅用于层间包含/依赖关系；`.pull` 与 `.judg` 未堆叠
+- [ ] **改版后核验通过**：结构标签逐一配平；内容字符级 diff 全部归入四类差异，无第五类
+- [ ] 全文无元沟通语言（"我们的XX"等）、**无祈使/说教句**（grep `必须分清|需先分清|印证：`）、**无绝对词**（grep `必然|难撼|逻辑自洽|决定性`）
+- [ ] 红线配额：破折号 `——` ≤ 5；对举句 ≤ 3
+- [ ] **所有 vendor/customer 性能数字都有 caveat**（vendor/customer-reported + 未经独立验证），无裸引"显著优于竞品"
+- [ ] **有独立的"对买方的建议"章节**，四类角色齐备、各含判断句 + 要点
+- [ ] **总结区有一条 SPA**（带年份 + 置信度措辞）
+- [ ] HTML 首屏是核心判断，不是导航
+- [ ] 企微版实测字节数落在对应密度档内（≤2,500 / ≤3,500 / ≤3,900），分节标记为 `▍`、分隔符为中文冒号，含 vendor caveat 与买方建议，无祈使句/绝对词
+- [ ] 三口径内容一致（同一组数字、同一组案例、同一份 caveat），已做跨文件关键串计数比对
+- [ ] 如执行了 reader-fit，审核文档已落盘，must-fix 项已全部处理，搁置项有显式记录
+- [ ] 所有产品 GA/Preview 状态已核实
+- [ ] 年份/届数时效核对：文中所有年份（SPA 措辞、趋势判断、市场规模）与本次大会实际举办年一致；若复用了上一届报告骨架，已全文 grep 上一届年份逐处替换，无残留
+- [ ] HTML 浏览器预览正常（折叠表默认收起、reveal 动画、导航高亮工作）

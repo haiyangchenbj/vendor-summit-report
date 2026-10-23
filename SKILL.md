@@ -3,7 +3,7 @@ name: vendor-summit-report
 description: Build an executive-oriented deep-dive industry report for a major data/AI vendor conference (e.g. Snowflake Summit, Databricks Data+AI Summit / DAIS, Microsoft Build, Google Cloud Next, AWS re:Invent). Use this when the user wants a "深度专题报告" / "专题报告" / "summit report" / "大会报告" for a vendor event, especially as a follow-up to a previous one (e.g. "等 databricks 大会过后用这个做报告"). Produces three aligned deliverables — light-theme HTML, full Markdown, and a WeCom (企微) push version — using a fixed 8-section structure optimized for an industry-insider / executive reader, held to Gartner/Forrester analyst-note standards (state-don't-instruct, vendor-data caveats, a role-based buyer-recommendations section, and confidence-tagged Strategic Planning Assumptions). The HTML follows a judgment-headline + lead + bullet-point reading contract and is optionally put through a reader-fit review. The STRUCTURE and VISUAL STYLE are the reusable asset; the CONTENT (insights, analysis frameworks, industry extension) must be freshly derived from the actual conference — never copy the previous report's specific analytical frameworks (e.g. a "七层治理生态") into a new vendor's report. Covers the proven workflow: research → core judgment → insights-first → product panorama as support → customer evidence → competitive landscape → buyer recommendations → conference-specific industry extension → summary.
 description_zh: 厂商大会深度专题报告
 description_en: Vendor summit deep-dive report
-version: "1.0.1""
+version: "1.0.2"
 agent_created: true
 ---
 
@@ -35,8 +35,8 @@ agent_created: true
 8. **表格非必须不用**：能用叙述/卡片替代就替代；确需表格时优先紧凑横条（fact-strip）或可折叠表。
 9. **淡色风格**：浅底白卡蓝色强调，参见模板 CSS 变量。
 10. **结构可复用，内容不可复制（最重要的一条）**：这个 skill 复用的是**结构骨架 + 视觉风格 + 写作纪律**。每场大会的**具体内容——洞察、分析框架、行业延伸的切入角度——必须从本次大会实际发布的内容重新推导**。模板里出现的任何特定分析框架（如 Snowflake 报告里的"多层治理生态""数据重力论"）都是**上一份报告的产物，是示例不是填空模板**。做新报告时：先看这场大会真正讲了什么、抛出了什么行业级命题，再顺着它做合理延伸。宁可延伸角度不同，也不要把旧框架硬塞进来凑格式。
-9. **阅读友好优先于文字密度**：每节先给结论，再给证据。禁止 200 字以上的裸段落——一律拆成「判断句标题 + 导语 + 要点行」。这是 2026-09-11 版式重构确立的契约，详见下节。
-11. **对外中立**：报告面向外部读者，不出现内部策划语境、内部人名、内部主张代号。厂商的公开词汇（如某厂商官方提出的架构名）可以使用，但必须有厂商公开视角支撑。
+11. **阅读友好优先于文字密度**：每节先给结论，再给证据。禁止 200 字以上的裸段落——一律拆成「判断句标题 + 导语 + 要点行」。这是 2026-09-11 版式重构确立的契约，详见下节。
+12. **对外中立**：报告面向外部读者，不出现内部策划语境、内部人名、内部主张代号。厂商的公开词汇（如某厂商官方提出的架构名）可以使用，但必须有厂商公开视角支撑。
 
 ## 分析师机构标准（Gartner/Forrester 级，2026-07 从 FFA 报告六轮打磨沉淀，务必遵守）
 

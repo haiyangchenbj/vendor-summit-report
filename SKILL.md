@@ -3,7 +3,7 @@ name: vendor-summit-report
 description: Build an executive-oriented deep-dive industry report for a major data/AI vendor conference (e.g. Snowflake Summit, Databricks Data+AI Summit / DAIS, Microsoft Build, Google Cloud Next, AWS re:Invent). Use this when the user wants a "深度专题报告" / "专题报告" / "summit report" / "大会报告" for a vendor event, especially as a follow-up to a previous one (e.g. "等 databricks 大会过后用这个做报告"). Produces three aligned deliverables — light-theme HTML, full Markdown, and a WeCom (企微) push version — using a fixed 8-section structure optimized for an industry-insider / executive reader, held to Gartner/Forrester analyst-note standards (state-don't-instruct, vendor-data caveats, a role-based buyer-recommendations section, and confidence-tagged Strategic Planning Assumptions). The HTML follows a judgment-headline + lead + bullet-point reading contract and is optionally put through a reader-fit review. The STRUCTURE and VISUAL STYLE are the reusable asset; the CONTENT (insights, analysis frameworks, industry extension) must be freshly derived from the actual conference — never copy the previous report's specific analytical frameworks (e.g. a "七层治理生态") into a new vendor's report. Covers the proven workflow: research → core judgment → insights-first → product panorama as support → customer evidence → competitive landscape → buyer recommendations → conference-specific industry extension → summary.
 description_zh: 厂商大会深度专题报告
 description_en: Vendor summit deep-dive report
-version: "1.0.2"
+version: "1.0.3"
 agent_created: true
 ---
 
@@ -130,7 +130,7 @@ agent_created: true
    - 复制 `@templates/wecom-template.md` 作为企微版基础
    - **三口径同步铁律**：MD 改完不等于口径统一。每轮修订收尾必须做一次跨文件关键串计数比对——`<h1>` 主副标题 / hero 副标题 / 抬头 / 关键事实表 / 表格口径 / caveat 句，逐项在三个文件里对同一字符串计数，数量不一致即漏改（2026-09-11 教训：HTML 的 `<h1>` 副标题漏同步一轮才发现）。
 5.5 **HTML 版式落地（三段式切分）**：把已成稿的叙述按阅读版式契约切分——每段识别判断句→提升为 `.card-h`，事实背景→`.lead`，并列论据→`.pts`，结论句→`.pull`，caveat→`.lim`/`.note`。**此步只做切分与强调，不改写文字**。改版后必做两项核验：① 结构配平（section/div/article/ul/li/p/table/tr/td/strong/b/span/details/h3 逐一 open=close）；② 内容零丢失——改版前 dump 纯文本快照，改版后按字符级 diff，差异须逐条归入「引号规范 / 标点随分块调整 / 新增结构标签 / 已知修正」四类，出现第五类即回滚排查。
-6. **企微版规范**：分隔符用中文冒号"："，**禁止竖线"｜"**；分节标记统一 `▍`；结构=核心判断（含 vendor caveat）+五观察+产品全景+竞争+**对买方的建议**+待验证问题+总结（含 SPA）；结尾固定"完整报告见 HTML 附件。"；同样禁祈使句/绝对词。
+6. **企微版规范**：分隔符用中文冒号"："，**禁止竖线"｜"**；分节标记统一 `▍`；结构=核心判断（含 vendor caveat）+五观察+产品全景+客户实证+竞争+**对买方的建议**+待验证问题+总结（含 SPA）；结尾固定"完整报告见 HTML 附件。"；同样禁祈使句/绝对词。
    - **字节预算按内容密度分层**（硬上限 4,096 字节，用 `len(text.encode('utf-8'))` 实测，不要目测字符数）：
      - 单场发布会、单一产品线：≤ 2,500 字节
      - 常规大会、两条产品线或一个战略概念：≤ 3,500 字节

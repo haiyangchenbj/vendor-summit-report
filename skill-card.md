@@ -1,6 +1,6 @@
 ## Description:
 
-Creates executive-focused Chinese reports on data and AI vendor conferences using fresh research and a consistent eight-section structure across three formats.
+Creates an executive-oriented, eight-section deep-dive report on a major data or AI vendor conference in light-theme HTML, full Markdown, and WeCom-ready formats.
 
 This skill is ready for commercial/non-commercial use.
 
@@ -14,7 +14,7 @@ MIT-0
 
 ## Use Case:
 
-Analysts and business leaders use this skill to research a data or AI vendor conference and produce a Chinese executive briefing with product facts, competitive analysis, and buyer recommendations.
+Executives, industry analysts, and vendor-strategy teams use the skill to turn research about a major data or AI vendor conference into an evidence-led deep-dive report with product context, customer evidence, competitive analysis, and buyer implications.
 
 ### Deployment Geography for Use:
 
@@ -22,17 +22,9 @@ Global
 
 ## Known Risks and Mitigations:
 
-Risk: Outdated conference details or unverified vendor and customer claims could mislead readers.
+Risk: Optional sharing could publish report contents publicly or send them to an unintended destination.
 
-Mitigation: Check announcement dates, product availability, and independent corroboration; label vendor- or customer-reported figures before distribution.
-
-Risk: Reusing the example templates could carry old vendor facts or analysis into a new report.
-
-Mitigation: Replace example-specific content and cross-check names, dates, figures, and claims across all three versions.
-
-Risk: Optional external publishing could distribute an unreviewed report.
-
-Mitigation: Publish or push only when requested, after reviewing the final content and destination.
+Mitigation: Prefer attachment delivery; before sharing, confirm the WeCom group, Pages repository and URL, report contents, and site visibility.
 
 ## Reference(s):
 
@@ -40,17 +32,17 @@ Mitigation: Publish or push only when requested, after reviewing the final conte
 
 ## Skill Output:
 
-**Output Type(s):** [HTML, Markdown, Text]
+**Output Type(s):** [HTML, Markdown]
 
-**Output Format:** [Light-theme HTML report, full Markdown report, and WeCom-ready Chinese text]
+**Output Format:** [Light-theme HTML report, full Markdown report, and WeCom-ready push version]
 
 **Output Parameters:** [1D]
 
-**Other Properties Related to Output:** [Three aligned versions with an eight-section structure; publication is optional and user-directed.]
+**Other Properties Related to Output:** [Three aligned deliverables with a fixed eight-section structure, executive-oriented analysis, and conference-specific findings.]
 
 ## Skill Version(s):
 
-1.0.1 (source: skill frontmatter and ClawHub release evidence)
+1.0.2 (source: frontmatter)
 
 ## Ethical Considerations:
 

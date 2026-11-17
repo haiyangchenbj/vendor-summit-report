@@ -3,7 +3,7 @@ name: vendor-summit-report
 description: Build an executive-oriented deep-dive industry report for a major data/AI vendor conference (e.g. Snowflake Summit, Databricks Data+AI Summit / DAIS, Microsoft Build, Google Cloud Next, AWS re:Invent). Use this when the user wants a "深度专题报告" / "专题报告" / "summit report" / "大会报告" for a vendor event, especially as a follow-up to a previous one (e.g. "等 databricks 大会过后用这个做报告"). Produces three aligned deliverables — light-theme HTML, full Markdown, and a WeCom (企微) push version — using a fixed 8-section structure optimized for an industry-insider / executive reader, held to Gartner/Forrester analyst-note standards (state-don't-instruct, vendor-data caveats, a role-based buyer-recommendations section, and confidence-tagged Strategic Planning Assumptions). The HTML follows a judgment-headline + lead + bullet-point reading contract and is optionally put through a reader-fit review. The STRUCTURE and VISUAL STYLE are the reusable asset; the CONTENT (insights, analysis frameworks, industry extension) must be freshly derived from the actual conference — never copy the previous report's specific analytical frameworks (e.g. a "七层治理生态") into a new vendor's report. Covers the proven workflow: research → core judgment → insights-first → product panorama as support → customer evidence → competitive landscape → buyer recommendations → conference-specific industry extension → summary.
 description_zh: 厂商大会深度专题报告
 description_en: Vendor summit deep-dive report
-version: "1.0.3"
+version: "1.0.4"
 agent_created: true
 ---
 
@@ -137,7 +137,7 @@ agent_created: true
      - 信息密度极高（多产品线 + 多案例 + 买方分角色建议同时成立）：3,500–3,900 字节
    - 超预算的删减顺序：先删「客户实证」，再删「待验证的问题」，**不可删「对买方的建议」**
    - 分角色建议是字节黑洞，四个角色各留 40-60 字，超过就说明该内容应留在 HTML 里
-7. **机械复核（格式与红线）**：检查观察层是否混入产品数字（去重）；检查是否有元沟通语言/祈使句/绝对词；检查 vendor 数字是否都有 caveat、买方建议章节是否存在、SPA 是否带置信度；检查 `.card-h` 是否都是判断句、有无残留裸段落；检查章节编号无 off-by-one（`.sec-no` 与注释编号一致）；HTML 用浏览器预览确认首屏是核心判断而非导航。grep 复核残留：`必须分清|需先分清|印证：|必然|难撼|逻辑自洽|决定性`。红线配额：破折号 `——` 全篇 ≤ 5、对举句（"不是…而是""而非"）≤ 3。注意 `.card` 类文献里的破折号常紧邻 `</strong>`/`</span>`，MD 与 HTML 不能共用同一组替换锚点，必须分别 dump 命中后逐条判定。
+7. **机械复核（格式与红线）**：检查观察层是否混入产品数字（去重）；检查是否有元沟通语言/祈使句/绝对词；检查 vendor 数字是否都有 caveat、买方建议章节是否存在、SPA 是否带置信度；检查 `.card-h` 是否都是判断句、有无残留裸段落；检查章节编号无 off-by-one（`.sec-no` 与注释编号一致）；HTML 用浏览器预览确认首屏是核心判断而非导航。grep 复核残留：`必须分清|需先分清|印证：|必然|一定|难撼|逻辑自洽|决定性`。红线配额：破折号 `——` 全篇 ≤ 5、对举句（"不是…而是""而非"）≤ 3。注意 `.card` 类文献里的破折号常紧邻 `</strong>`/`</span>`，MD 与 HTML 不能共用同一组替换锚点，必须分别 dump 命中后逐条判定。
 7.5 **reader-fit 阅读测试（推荐，机制取自 tech-content-review-panel §Step R）**：机械复核保证的是"没有违规"，reader-fit 保证的是"读者真的读得懂"。适用于本类报告，审核文档与报告同目录落盘，命名 `<报告名>_reader-fit审核.md`。
    - **R0 定位锁**：先写清文类（厂商大会深度专题）/ 主读者（企业侧数据与 AI 平台决策者）/ 阅读任务（判断是否以及何时评估该厂商）/ 中心命题 / 刻意排除的内容 / 深度层级。定位锁是后续分级判据，不能省。
    - **R1 选 3-4 个代表角色**：本类报告**不选**投资人、媒体编辑、泛读者（与定位不兼容）。优先选：企业决策者（数据平台或 AI 平台负责人）、领域专家（同类技术负责人）、运行时与治理工程师、跨域行业读者。
